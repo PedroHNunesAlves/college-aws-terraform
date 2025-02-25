@@ -11,15 +11,6 @@ variable "vpcs" {
     public_subnets     = list(string)
     private_subnets    = list(string)
   }))
-  default = {
-    "main" = {
-      name               = "my-vpc"
-      cidr               = "10.0.0.0/16"
-      availability_zones = ["us-east-1a"]
-      public_subnets     = ["10.0.101.0/24"]
-      private_subnets    = ["10.0.1.0/24"]
-    }
-  }
 }
 
 variable "security_groups" {
@@ -35,22 +26,6 @@ variable "security_groups" {
       cidr_blocks = string
     }))
   }))
-  default = {
-    "main" = {
-      name        = "main-sg"
-      description = "Main security group"
-      vpc_key     = "main"
-      ingress_rules = [
-        {
-          from_port   = 22
-          to_port     = 22
-          protocol    = "tcp"
-          description = "SSH"
-          cidr_blocks = "0.0.0.0/0"
-        }
-      ]
-    }
-  }
 }
 
 variable "ec2_instances" {
@@ -70,22 +45,4 @@ variable "ec2_instances" {
       volume_type = string
     })
   }))
-  default = {
-    "main" = {
-      name                        = "instance"
-      instance_type               = "t2.micro"
-      ami                         = "ami-0c55b159cbfafe1f0"
-      key_name                    = "user-key"
-      monitoring                  = false
-      associate_public_ip_address = true
-      iam_instance_profile        = ""
-      private_placement           = false
-      vpc_key                     = "main"
-      security_group_keys         = ["main"]
-      root_block_device = {
-        volume_size = 8
-        volume_type = "gp2"
-      }
-    }
-  }
 }
